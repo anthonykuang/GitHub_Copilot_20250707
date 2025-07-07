@@ -86,7 +86,6 @@
     </form>
     <div id="result" style="margin-top:20px;"></div>
     <script>
-        
         async function calculateBMI() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
@@ -106,7 +105,7 @@
                     throw new Error('伺服器錯誤');
                 }
                 const data = await response.json();
-                // 使用toastr顯示結果
+                // 使用toastr顯示結果，只顯示 BMI
                 toastr.success(`您的 BMI 為 ${data}`);
                 resultDiv.textContent = `您的 BMI 為 ${data}`;
             } catch (error) {
