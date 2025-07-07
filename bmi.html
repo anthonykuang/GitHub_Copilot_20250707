@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>BMI 計算器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         body {
             background: #f6f8fa;
@@ -72,6 +73,7 @@
             box-shadow: 0 2px 8px rgba(44,62,80,0.06);
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body>
     <h1>BMI 計算器</h1>
@@ -84,6 +86,7 @@
     </form>
     <div id="result" style="margin-top:20px;"></div>
     <script>
+        
         async function calculateBMI() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
@@ -103,12 +106,13 @@
                     throw new Error('伺服器錯誤');
                 }
                 const data = await response.json();
-                resultDiv.textContent = `您的 BMI 為 ${data.bmi.toFixed(2)}，屬於：${data.category}`;
+                // 使用toastr顯示結果
+                toastr.success(`您的 BMI 為 ${data}`);
+                resultDiv.textContent = `您的 BMI 為 ${data}`;
             } catch (error) {
                 resultDiv.textContent = '計算失敗，請稍後再試。';
             }
         }
     </script>
 </body>
-</html>
 </html>
