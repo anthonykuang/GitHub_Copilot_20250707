@@ -86,6 +86,7 @@
     </form>
     <div id="result" style="margin-top:20px;"></div>
     <script>
+        
         async function calculateBMI() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
@@ -105,9 +106,13 @@
                     throw new Error('伺服器錯誤');
                 }
                 const data = await response.json();
-                // 使用toastr顯示結果，只顯示 BMI
-                toastr.success(`您的 BMI 為 ${data}`);
-                resultDiv.textContent = `您的 BMI 為 ${data}`;
+                // 處理 data 可能為字串、數字或物件
+                let bmiValue = data;
+                if (typeof data === 'object' && data !== null) {
+                    bmiValue = data.bmi ?? JSON.stringify(data);
+                }
+                toastr.success(`您的 BMI 為 ${bmiValue}`);
+                resultDiv.textContent = `您的 BMI 為 ${bmiValue}`;
             } catch (error) {
                 resultDiv.textContent = '計算失敗，請稍後再試。';
             }
