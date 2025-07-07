@@ -84,7 +84,7 @@
     </form>
     <div id="result" style="margin-top:20px;"></div>
     <script>
-        function calculateBMI() {
+        async function calculateBMI() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
             const resultDiv = document.getElementById('result');
@@ -92,23 +92,23 @@
                 resultDiv.textContent = '請輸入有效的身高和體重。';
                 return;
             }
-            const bmi = weight / Math.pow(height / 100, 2);
-            let category = '';
-            if (bmi < 18.5) {
-                category = '體重過輕';
-            } else if (bmi < 24) {
-                category = '正常範圍';
-            } else if (bmi < 27) {
-                category = '過重';
-            } else if (bmi < 30) {
-                category = '輕度肥胖';
-            } else if (bmi < 35) {
-                category = '中度肥胖';
-            } else {
-                category = '重度肥胖';
+            resultDiv.textContent = '計算中...';
+            try {
+                const response = await fetch('/api/bmi', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ height, weight })
+                });
+                if (!response.ok) {
+                    throw new Error('伺服器錯誤');
+                }
+                const data = await response.json();
+                resultDiv.textContent = `您的 BMI 為 ${data.bmi.toFixed(2)}，屬於：${data.category}`;
+            } catch (error) {
+                resultDiv.textContent = '計算失敗，請稍後再試。';
             }
-            resultDiv.textContent = `您的 BMI 為 ${bmi.toFixed(2)}，屬於：${category}`;
         }
     </script>
 </body>
+</html>
 </html>
