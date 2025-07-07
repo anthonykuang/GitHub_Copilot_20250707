@@ -51,8 +51,37 @@ namespace HOL_GitHub_Copilot_HTML.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] BmiInput input)
         {
-            // 這裡僅回傳收到的資料，可依需求擴充
-            return Ok(new { input.Height, input.Weight });
+            if (input.Height <= 0 || input.Weight <= 0)
+            {
+                return BadRequest("請輸入有效的身高和體重。");
+            }
+            double bmi = input.Weight / Math.Pow(input.Height / 100, 2);
+            string category = "";
+            if (bmi < 18.5)
+            {
+                category = "體重過輕";
+            }
+            else if (bmi < 24)
+            {
+                category = "正常範圍";
+            }
+            else if (bmi < 27)
+            {
+                category = "過重";
+            }
+            else if (bmi < 30)
+            {
+                category = "輕度肥胖";
+            }
+            else if (bmi < 35)
+            {
+                category = "中度肥胖";
+            }
+            else
+            {
+                category = "重度肥胖";
+            }
+            return Ok(new { bmi = bmi.ToString("F2"), category });
         }
     }
 }
