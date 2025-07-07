@@ -2,9 +2,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddControllers(); // 新增這行以支援 API
-builder.Services.AddEndpointsApiExplorer(); // 加入這行
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+
+// Add Swagger support
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "My API", Version = "v1" });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,11 +27,15 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseSwagger(); // 加入這行
-app.UseSwaggerUI(); // 加入這行
+// Enable Swagger
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+});
 
+//支援webapi controllers
+app.MapControllers();
 app.MapRazorPages();
-app.MapControllers(); // 新增這行以對應 API 路由
-
 
 app.Run();
