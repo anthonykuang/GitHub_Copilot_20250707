@@ -6,6 +6,12 @@ namespace HOL_GitHub_Copilot_HTML.Controllers
     [Route("api/[controller]")]
     public class BmiController : ControllerBase
     {
+        public class BmiInput
+        {
+            public double Height { get; set; } // 單位: 公分
+            public double Weight { get; set; } // 單位: 公斤
+        }
+
         [HttpGet]
         public IActionResult Get(double height, double weight)
         {
@@ -40,6 +46,13 @@ namespace HOL_GitHub_Copilot_HTML.Controllers
                 category = "重度肥胖";
             }
             return Ok(new { bmi = bmi.ToString("F2"), category });
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] BmiInput input)
+        {
+            // 這裡僅回傳收到的資料，可依需求擴充
+            return Ok(new { input.Height, input.Weight });
         }
     }
 }
