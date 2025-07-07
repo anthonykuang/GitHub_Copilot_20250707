@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddControllers(); // 新增這行以支援 API
 builder.Services.AddEndpointsApiExplorer(); // 加入這行
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,11 +22,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseSwagger(); // 加入這行
+app.UseSwaggerUI(); // 加入這行
+
 app.MapRazorPages();
 app.MapControllers(); // 新增這行以對應 API 路由
 
-// 加入以下程式碼以啟用 Swagger
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.Run();
